@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "ROS2-Humble",
+            "compileCommands": "${workspaceFolder}/build/你的包名/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
