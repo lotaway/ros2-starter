@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  ros2-humble:
+    image: osrf/ros:humble-desktop
+    platform: linux/amd64
+    container_name: ros2_humble_dev
+    network_mode: host
+    ipc: host
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - QT_X11_NO_MITSHM=1
+      - DOCKER_DEFAULT_PLATFORM=linux/amd64
+      - DOCKER_CLI_EXPERIMENTAL=enabled
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./:/root/ros2_ws
+
+    stdin_open: true
+    tty: true
+    working_dir: /root/ros2_ws
+    command: |
+      bash -c "
+        # 首先source ROS 2环境
+        source /opt/ros/humble/setup.bash &&
+        # 如果存在工作空间的setup文件，也source它
+        if [ -f install/setup.bash ]; then
+          source install/setup.bash
+        fi &&
+        # 打印欢迎信息
+        echo '=======================================' &&
+        echo 'ROS 2 Humble开发环境已启动' &&
+        echo '已挂载目录：/root/ros2_ws -> 当前目录' &&
+        echo '可用命令示例：' &&
+        echo '  ros2 run turtlesim turtlesim_node' &&
+        echo '  ros2 run demo_nodes_cpp talker' &&
+        echo '  rviz2' &&
+        echo '=======================================' &&
+        # 保持容器运行
+        exec bash
+      "
