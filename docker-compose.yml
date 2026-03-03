@@ -16,27 +16,10 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./:/root/ros2_ws
+      - ./setup_ros.sh:/setup_ros.sh:ro
 
     stdin_open: true
     tty: true
     working_dir: /root/ros2_ws
-    command: |
-      bash -c "
-        # 首先source ROS 2环境
-        source /opt/ros/humble/setup.bash &&
-        # 如果存在工作空间的setup文件，也source它
-        if [ -f install/setup.bash ]; then
-          source install/setup.bash
-        fi &&
-        # 打印欢迎信息
-        echo '=======================================' &&
-        echo 'ROS 2 Humble开发环境已启动' &&
-        echo '已挂载目录：/root/ros2_ws -> 当前目录' &&
-        echo '可用命令示例：' &&
-        echo '  ros2 run turtlesim turtlesim_node' &&
-        echo '  ros2 run demo_nodes_cpp talker' &&
-        echo '  rviz2' &&
-        echo '=======================================' &&
-        # 保持容器运行
-        exec bash
-      "
+    entrypoint: /setup_ros.sh
+    command: bash
