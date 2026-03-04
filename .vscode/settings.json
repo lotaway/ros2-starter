@@ -1,0 +1,5 @@
+{
+    "cmake.sourceDirectory": "/root/ros2_ws/ros2-starter",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/compile_commands.json"
+}

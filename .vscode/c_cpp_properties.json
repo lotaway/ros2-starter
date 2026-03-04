@@ -2,8 +2,15 @@
     "configurations": [
         {
             "name": "ROS2-Humble",
-            "compileCommands": "${workspaceFolder}/build/你的包名/compile_commands.json",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/ros/humble/include/**",
+                "/usr/include/**"
+            ]
         }
     ],
     "version": 4
