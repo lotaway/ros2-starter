@@ -1,11 +1,42 @@
 {
-    "name": "ROS2 Humble Dev",
-    // 告诉 VS Code 附加到现有容器
-    "dockerFile": "none",
-    // 关键：指定容器内的工作区文件夹
-    "workspaceFolder": "/root/ros2_ws",
-    // 确保用户正确
+    "name": "ROS 2 Development Container",
+    "privileged": true,
     "remoteUser": "root",
-    // 可选：容器附加后自动执行的命令
-    "postAttachCommand": "echo 'Welcome to ROS2 Humble Dev Container'"
+    "build": {
+        "dockerfile": "none",
+        "args": {
+            "USERNAME": "root"
+        }
+    },
+    "workspaceFolder": "/root/ros2_ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/root/ros2_ws,type=bind",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "twxs.cmake",
+                "donjayamanne.python-extension-pack",
+                "eamodio.gitlens",
+                "ms-iot.vscode-ros"
+            ]
+        }
+    },
+    "containerEnv": {
+        "DISPLAY": "unix:0",
+        "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+        "ROS_DOMAIN_ID": "42"
+    },
+    "runArgs": [
+        "--net=host",
+        "--pid=host",
+        "--ipc=host",
+        "-e",
+        "DISPLAY=${env:DISPLAY}"
+    ],
+    "mounts": [
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+        "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) /home/ws/"
 }
