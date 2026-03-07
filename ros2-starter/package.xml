@@ -3,7 +3,7 @@
 <package format="3">
   <name>ros2-starter</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>ROS2 starter package with Topic, Service, and Action examples</description>
   <maintainer email="576696294@qq.com">root</maintainer>
   <license>TODO: License declaration</license>
 
@@ -11,7 +11,10 @@
 
   <depend>rclcpp</depend>
   <depend>rclpy</depend>
+  <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
+  <depend>example_interfaces</depend>
+  <depend>action_tutorials_interfaces</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
