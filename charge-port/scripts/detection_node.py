@@ -72,41 +72,60 @@ class DetectionNode(Node):
         # Convert ROS Image to OpenCV
         frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         
-        # 1. Vehicle Detection (Simulation of logic from documentation)
-        vehicle_results = self.vehicle_model.track(frame, persist=True, verbose=False)
+        # 1. Vehicle Detection & Tracking
+        # Only detect: car(2), motorcycle(3), bus(5), truck(7) to speed up and reduce false positives
+        vehicle_results = self.vehicle_model.track(frame, persist=True, classes=[2, 3, 5, 7], verbose=False)
         
-        # 2. Charging Port Detection in Occupied Areas
-        # (Simplified logic for demonstration in ROS2 node)
-        charging_results = self.charging_model(frame, verbose=False)
+        # 2. ROI-based Charging Port Detection
+        # Instead of searching the whole frame, we only look at specific parking regions
+        detected_ports = []
         
-        count = 0
-        if charging_results[0].boxes is not None:
-            for box in charging_results[0].boxes:
-                count += 1
-                cls_id = int(box.cls[0])
-                conf = float(box.conf[0])
-                cls_name = self.charging_model.names[cls_id]
-                x1, y1, x2, y2 = box.xyxy[0].cpu().tolist()
+        for region in self.parking_regions:
+            # Simple ROI extraction based on config points
+            pts = region['points']
+            x_coords = [p[0] for p in pts]
+            y_coords = [p[1] for p in pts]
+            x1, y1, x2, y2 = min(x_coords), min(y_coords), max(x_coords), max(y_coords)
+            
+            # Crop the parking spot with a small margin
+            margin = 20
+            roi = frame[max(0, y1-margin):min(frame.shape[0], y2+margin), 
+                        max(0, x1-margin):min(frame.shape[1], x2+margin)]
+            
+            if roi.size > 0:
+                # 3. Detection on the small ROI is MUCH faster
+                charging_results = self.charging_model(roi, verbose=False)
                 
-                # Publish detailed status if available
-                if ChargingStatus:
-                    status_msg = ChargingStatus()
-                    status_msg.header = msg.header
-                    status_msg.is_charging = True
-                    status_msg.port_type = cls_name
-                    status_msg.confidence = conf
-                    # ROI etc.
-                    self.detailed_status_pub.publish(status_msg)
+                if charging_results[0].boxes is not None and len(charging_results[0].boxes) > 0:
+                    for box in charging_results[0].boxes:
+                        cls_id = int(box.cls[0])
+                        conf = float(box.conf[0])
+                        cls_name = self.charging_model.names[cls_id]
+                        detected_ports.append({
+                            'spot_id': region['id'],
+                            'type': cls_name,
+                            'conf': conf
+                        })
+                        
+                        # (Optional) Publish detailed status per port
+                        if ChargingStatus:
+                            status_msg = ChargingStatus()
+                            status_msg.header = msg.header
+                            status_msg.is_charging = True
+                            status_msg.port_type = cls_name
+                            status_msg.confidence = conf
+                            status_msg.parking_spot_id = region['id']
+                            self.detailed_status_pub.publish(status_msg)
         
         # Publish summary
-        summary = f"Detected {count} charging ports in current frame."
+        summary = f"System Status: Monitoring {len(self.parking_regions)} spots. Detected {len(detected_ports)} active charging ports."
         self.status_pub.publish(String(data=summary))
 
 def main(args=None):
     rclpy.init(args=args)
     node = DetectionNode()
     rclpy.spin(node)
-    node.destroy_node()
+    node.destroy_node() 
     rclpy.shutdown()
 
 if __name__ == '__main__':
