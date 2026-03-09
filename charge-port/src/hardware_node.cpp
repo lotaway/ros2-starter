@@ -6,16 +6,27 @@ HardwareNode::HardwareNode() : Node("hardware_node") {
     // Parameters
     this->declare_parameter("camera_id", 0);
     this->declare_parameter("frame_rate", 30.0);
+    this->declare_parameter("video_path", "");
     
     camera_id_ = this->get_parameter("camera_id").as_int();
     double fps = this->get_parameter("frame_rate").as_double();
+    std::string video_path = this->get_parameter("video_path").as_string();
     
-    // Initialize Camera
-    cap_.open(camera_id_);
-    if (!cap_.isOpened()) {
-        RCLCPP_ERROR(this->get_logger(), "Failed to open camera %d", camera_id_);
+    // Initialize Camera or Video File
+    if (!video_path.empty()) {
+        cap_.open(video_path);
+        if (!cap_.isOpened()) {
+            RCLCPP_ERROR(this->get_logger(), "Failed to open video file: %s", video_path.c_str());
+        } else {
+            RCLCPP_INFO(this->get_logger(), "Simulating with video file: %s", video_path.c_str());
+        }
     } else {
-        RCLCPP_INFO(this->get_logger(), "Opened camera %d", camera_id_);
+        cap_.open(camera_id_);
+        if (!cap_.isOpened()) {
+            RCLCPP_ERROR(this->get_logger(), "Failed to open camera %d", camera_id_);
+        } else {
+            RCLCPP_INFO(this->get_logger(), "Opened camera %d", camera_id_);
+        }
     }
     
     // Publishers & Subscribers
@@ -46,6 +57,11 @@ void HardwareNode::timer_callback() {
         msg->header.stamp = this->now();
         msg->header.frame_id = "camera_link";
         image_pub_.publish(*msg);
+    } else {
+        // If it's a video file, loop back to the beginning
+        if (this->get_parameter("video_path").as_string() != "") {
+            cap_.set(cv::CAP_PROP_POS_FRAMES, 0);
+        }
     }
 }
 
