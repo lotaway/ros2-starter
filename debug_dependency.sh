@@ -1,0 +1,1 @@
+sudo apt install gdb build-essential gdbserver

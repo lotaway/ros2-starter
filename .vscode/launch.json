@@ -12,15 +12,20 @@
             "environment": [
                 {
                     "name": "PYTHONPATH",
-                    "value": "${workspaceFolder}/install/charge_port/lib/python3.10/site-packages"
+                    "value": "/opt/ros/humble/lib/python3.10/site-packages:${workspaceFolder}/install/charge_port/lib/python3.10/site-packages"
                 },
                 {
                     "name": "LD_LIBRARY_PATH",
-                    "value": "${workspaceFolder}/install/charge_port/lib"
+                    "value": "/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:${workspaceFolder}/install/charge_port/lib"
+                },
+                {
+                    "name": "AMENT_PREFIX_PATH",
+                    "value": "/opt/ros/humble:${workspaceFolder}/install/charge_port"
                 }
             ],
             "externalConsole": false,
             "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
