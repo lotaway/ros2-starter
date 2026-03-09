@@ -7,7 +7,6 @@ endif()
 
 # Find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -47,7 +46,6 @@ install(TARGETS
 )
 
 # Install Python scripts
-ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
   scripts/detection_node.py
