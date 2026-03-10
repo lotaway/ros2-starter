@@ -50,11 +50,12 @@ install(TARGETS
 install(PROGRAMS
   scripts/detection_node.py
   scripts/train_charging.py
+  scripts/arm_test_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install config and other files
-install(DIRECTORY config dataset
+install(DIRECTORY config dataset launch urdf worlds models
   DESTINATION share/${PROJECT_NAME}
 )
 
