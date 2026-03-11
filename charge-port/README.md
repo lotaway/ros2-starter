@@ -38,6 +38,7 @@ charge-port/
 ├── scripts/                    # Python 源代码 (AI 推理 & 训练)
 │   ├── detection_node.py       # 推理节点
 │   └── train_charging.py       # 训练脚本
+├── test/                       # 自动化测试 (GTest, Pytest, Integration)
 ├── config/                     # 停车位 ROI 区域配置文件
 └── dataset/                    # YOLO 训练数据集结构 (含配置文件)
 ```
@@ -83,6 +84,28 @@ ros2 run charge_port detection_node.py
 ```powershell
 python ./scripts/train_charging.py
 ```
+
+## 🧪 自动化测试 (Automated Testing)
+
+项目遵循 ROS 2 标准化测试流程，包含单元测试、逻辑测试与集成测试。
+
+### 1. 运行测试
+在工作空间根目录下执行：
+
+```bash
+# 编译并运行所有测试
+colcon test --packages-select charge_port
+
+# 查看测试结果汇总
+colcon test-result --verbose
+```
+
+### 2. 测试覆盖范围
+- **C++ 单元测试 (GTest)**: 验证核心控制逻辑与命令校验 (`test/test_utils.cpp`)。
+- **Python 逻辑测试 (Pytest)**: 验证检测算法数据处理与配置解析 (`test/test_detection.py`)。
+- **集成测试 (Launch Testing)**: 模拟多节点启动环境，验证节点生命周期与通信链路 (`test/test_integration.py`)。
+
+---
 
 ## 🛠️ 硬件扩展说明
 

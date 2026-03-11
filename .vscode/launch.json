@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ROS2: C++ Hardware Node (Simulated Video)",
+            "name": "ROS2: hardware_node (Simulated)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/install/charge_port/lib/charge_port/hardware_node",
@@ -12,30 +12,26 @@
             "environment": [
                 {
                     "name": "PYTHONPATH",
-                    "value": "/opt/ros/humble/lib/python3.10/site-packages:${workspaceFolder}/install/charge_port/lib/python3.10/site-packages"
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble/lib/python3.10/site-packages:${workspaceFolder}/install/charge_port/lib/python3.10/site-packages"
                 },
                 {
-                    "name": "LD_LIBRARY_PATH",
-                    "value": "/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:${workspaceFolder}/install/charge_port/lib"
+                    "name": "DYLD_LIBRARY_PATH",
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble/lib:/Users/luwei/miniforge3/envs/ros2_humble/opt/rviz_ogre_vendor/lib:${workspaceFolder}/install/charge_port/lib"
                 },
                 {
                     "name": "AMENT_PREFIX_PATH",
-                    "value": "/opt/ros/humble:${workspaceFolder}/install/charge_port"
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble:${workspaceFolder}/install/charge_port"
+                },
+                {
+                    "name": "PATH",
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble/bin:${env:PATH}"
                 }
             ],
             "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
+            "MIMode": "lldb"
         },
         {
-            "name": "ROS2: C++ Hardware Node",
+            "name": "ROS2: hardware_node",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/install/charge_port/lib/charge_port/hardware_node",
@@ -45,38 +41,44 @@
             "environment": [
                 {
                     "name": "PYTHONPATH",
-                    "value": "/opt/ros/humble/lib/python3.10/site-packages:${workspaceFolder}/install/charge_port/lib/python3.10/site-packages"
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble/lib/python3.10/site-packages:${workspaceFolder}/install/charge_port/lib/python3.10/site-packages"
                 },
                 {
-                    "name": "LD_LIBRARY_PATH",
-                    "value": "/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:${workspaceFolder}/install/charge_port/lib"
+                    "name": "DYLD_LIBRARY_PATH",
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble/lib:/Users/luwei/miniforge3/envs/ros2_humble/opt/rviz_ogre_vendor/lib:${workspaceFolder}/install/charge_port/lib"
                 },
                 {
                     "name": "AMENT_PREFIX_PATH",
-                    "value": "/opt/ros/humble:${workspaceFolder}/install/charge_port"
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble:${workspaceFolder}/install/charge_port"
+                },
+                {
+                    "name": "PATH",
+                    "value": "/Users/luwei/miniforge3/envs/ros2_humble/bin:${env:PATH}"
                 }
             ],
             "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
+            "MIMode": "lldb"
         },
         {
-            "name": "ROS2: Python Detection Node",
+            "name": "ROS2: detection_node.py",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/install/charge_port/lib/charge_port/detection_node.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/install/charge_port/lib/python3.10/site-packages:${env:PYTHONPATH}"
+                "PYTHONPATH": "/Users/luwei/miniforge3/envs/ros2_humble/lib/python3.10/site-packages:${workspaceFolder}/install/charge_port/lib/python3.10/site-packages",
+                "AMENT_PREFIX_PATH": "/Users/luwei/miniforge3/envs/ros2_humble:${workspaceFolder}/install/charge_port",
+                "PATH": "/Users/luwei/miniforge3/envs/ros2_humble/bin:${env:PATH}"
             }
+        },
+        {
+            "name": "ROS2: Attach C++",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/install/charge_port/lib/charge_port/hardware_node",
+            "processId": "${command:pickProcess}",
+            "MIMode": "lldb"
         }
     ]
 }

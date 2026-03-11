@@ -8,8 +8,7 @@
             "cppStandard": "c++17",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/ros/humble/include/**",
-                "/usr/include/**"
+                "/Users/luwei/miniforge3/envs/ros2_humble/include/**"
             ]
         }
     ],
