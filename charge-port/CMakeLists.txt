@@ -29,7 +29,12 @@ include_directories(
 )
 
 # C++ Hardware Node
-add_executable(hardware_node src/hardware_node.cpp)
+# C++ Hardware Node
+add_executable(hardware_node 
+  src/hardware_node.cpp
+  src/utils.cpp
+)
+
 ament_target_dependencies(hardware_node
   rclcpp
   sensor_msgs
@@ -62,6 +67,22 @@ install(DIRECTORY config dataset launch urdf worlds models
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+
+  # C++ Unit Tests
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_utils test/test_utils.cpp)
+  target_include_directories(test_utils PUBLIC include)
+  target_sources(test_utils PRIVATE src/utils.cpp)
+
+  # Python Unit Tests
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(test_detection test/test_detection.py)
+
+  # Integration Tests
+  # Note: launch_testing usually uses pytest as runner
+  ament_add_pytest_test(test_integration test/test_integration.py
+    APPEND_LIBRARY_DIRS "${CMAKE_CURRENT_BINARY_DIR}"
+  )
 endif()
 
 ament_package()

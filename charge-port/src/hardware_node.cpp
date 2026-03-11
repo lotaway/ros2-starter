@@ -1,4 +1,6 @@
 #include "charge_port/hardware_node.hpp"
+#include "charge_port/utils.hpp"
+
 
 namespace charge_port {
 
@@ -72,12 +74,19 @@ void HardwareNode::command_callback(const std_msgs::msg::String::SharedPtr msg) 
 
 void HardwareNode::control_charging_pile(const std::string& command) {
     // STUB: Replace with actual serial/CAN/Modbus communication logic
+    if (!utils::is_valid_command(command)) {
+        RCLCPP_WARN(this->get_logger(), "HARDWARE: Rejected invalid command: %s", command.c_str());
+        return;
+    }
+
     if (command == "start") {
         RCLCPP_INFO(this->get_logger(), "HARDWARE: Starting charging cycle...");
     } else if (command == "stop") {
         RCLCPP_INFO(this->get_logger(), "HARDWARE: Stopping charging cycle...");
-    } else {
-        RCLCPP_WARN(this->get_logger(), "HARDWARE: Unknown command: %s", command.c_str());
+    } else if (command == "reset") {
+        RCLCPP_INFO(this->get_logger(), "HARDWARE: Resetting hardware...");
+    } else if (command == "status") {
+        RCLCPP_INFO(this->get_logger(), "HARDWARE: Status requested.");
     }
 }
 
