@@ -6,10 +6,14 @@ def train_charging_detector():
     # 1. Load pre-trained model
     model = YOLO('yolov8n.pt') 
     
+    # 自动获取路径
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    pkg_root = os.path.dirname(script_dir)
+    
     # Check if data config exists
-    data_yaml = 'dataset/charging_port.yaml'
+    data_yaml = os.path.join(pkg_root, 'dataset/charging_port.yaml')
     if not os.path.exists(data_yaml):
-        print(f"Warning: {data_yaml} not found. Please ensure dataset structure is correct.")
+        print(f"Error: {data_yaml} not found.")
         return
 
     # 2. Training parameters
@@ -38,8 +42,8 @@ def train_charging_detector():
         patience=50,
         save=True,
         save_period=10,
-        project='runs/train_charging',
-        name='charging_detector',
+        project=os.path.join(pkg_root, 'models'),
+        name='detector',
     )
     
     # 3. Validation

@@ -77,13 +77,37 @@ ros2 run charge_port hardware_node --ros-args -p camera_id:=0
 ros2 run charge_port detection_node.py
 ```
 
-### 4. 训练模型 (可选)
+### 4. 数据标注与训练模型 (Data Annotation & Training)
 如果您需要重新训练针对特定场景的探测器：
-1. 将标注好的图片放入 `dataset/train/images` 和 `labels`。
-2. 运行训练脚本：
-```powershell
+
+#### A. 数据标注指南
+1. **推荐工具**:
+   - **[Roboflow](https://roboflow.com/) (推荐)**: 在线工具，支持自动分割、增强并导出 YOLOv8 格式。
+   - **[LabelImg](https://github.com/HumanSignal/labelImg)**: 离线开源工具，支持直接保存为 YOLO 格式。
+2. **导出格式**: 选择 **YOLO** 格式。
+3. **标注内容**: 每个图片对应一个 `.txt` 文件，内容格式为：`<class_id> <x_center> <y_center> <width> <height>` (所有值需归一化至 0-1)。
+   - `0`: ccs
+   - `1`: tesla
+   - `2`: chademo
+
+#### B. 数据集存放路径
+将图片和标注文件按以下结构存放：
+```text
+dataset/
+├── train/
+│   ├── images/   # 训练图片
+│   └── labels/   # 对应的 .txt 标注文件
+└── val/
+    ├── images/   # 验证图片
+    └── labels/   # 对应的 .txt 标注文件
+```
+
+#### C. 开始训练
+运行训练脚本：
+```bash
 python ./scripts/train_charging.py
 ```
+训练完成后，模型将自动保存至 `models/detector/weights/best.pt`，执行 `colcon build` 后即可在推理节点中使用。
 
 ## 🧪 自动化测试 (Automated Testing)
 

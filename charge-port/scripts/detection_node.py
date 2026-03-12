@@ -9,6 +9,8 @@ import json
 import os
 from ultralytics import YOLO
 
+from ament_index_python.packages import get_package_share_directory
+
 # Import custom message
 # Note: In a real ROS2 environment, you'd need to build the package first
 # to generate the python bindings for ChargingStatus.
@@ -22,10 +24,13 @@ class DetectionNode(Node):
     def __init__(self):
         super().__init__('detection_node')
         
+        # Get package share directory
+        pkg_share = get_package_share_directory('charge_port')
+        
         # Parameters
-        self.declare_parameter('model_path', 'runs/train_charging/charging_detector/weights/best.pt')
+        self.declare_parameter('model_path', os.path.join(pkg_share, 'models', 'detector', 'weights', 'best.pt'))
         self.declare_parameter('vehicle_model_path', 'yolov8n.pt')
-        self.declare_parameter('regions_path', 'config/parking_regions.json')
+        self.declare_parameter('regions_path', os.path.join(pkg_share, 'config', 'parking_regions.json'))
         
         model_path = self.get_parameter('model_path').get_parameter_value().string_value
         vehicle_model_path = self.get_parameter('vehicle_model_path').get_parameter_value().string_value
