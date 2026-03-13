@@ -30,13 +30,15 @@ conda config --env --add channels robostack-staging -n $ENV_NAME
 echo "Installing ROS2 packages into $ENV_NAME..."
 mamba install -y -n $ENV_NAME --override-channels -c robostack-staging -c conda-forge \
   ros-humble-desktop-full \
-  cmake pkg-config make ninja \
+  compilers cmake pkg-config make ninja \
   colcon-common-extensions catkin_tools rosdep \
+  ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-control-toolbox ros-humble-controller-manager \
   ros-humble-gazebo-ros-pkgs \
   ros-humble-gazebo-ros2-control \
   ros-humble-xacro \
   ros-humble-cv-bridge \
-  ros-humble-image-transport
+  ros-humble-image-transport \
+  ros-humble-moveit
 
 # 6. Check installation using mamba run
 echo "Verifying installation..."
