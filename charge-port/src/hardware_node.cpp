@@ -9,13 +9,17 @@ HardwareNode::HardwareNode() : Node("hardware_node") {
     this->declare_parameter("camera_id", 0);
     this->declare_parameter("frame_rate", 30.0);
     this->declare_parameter("video_path", "");
+    this->declare_parameter("use_simulation", false);
     
     camera_id_ = this->get_parameter("camera_id").as_int();
     double fps = this->get_parameter("frame_rate").as_double();
     std::string video_path = this->get_parameter("video_path").as_string();
+    bool use_simulation = this->get_parameter("use_simulation").as_bool();
     
     // Initialize Camera or Video File
-    if (!video_path.empty()) {
+    if (use_simulation) {
+        RCLCPP_INFO(this->get_logger(), "Running in simulation mode, skipping camera initialization.");
+    } else if (!video_path.empty()) {
         cap_.open(video_path);
         if (!cap_.isOpened()) {
             RCLCPP_ERROR(this->get_logger(), "Failed to open video file: %s", video_path.c_str());
@@ -53,6 +57,8 @@ HardwareNode::~HardwareNode() {
 }
 
 void HardwareNode::timer_callback() {
+    if (!cap_.isOpened()) return;
+
     cv::Mat frame;
     if (cap_.read(frame)) {
         auto msg = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", frame).toImageMsg();
