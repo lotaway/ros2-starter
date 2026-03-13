@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   ros2-humble:
-    image: osrf/ros:humble-desktop
+    image: osrf/ros:humble-desktop-full
     platform: linux/amd64
     container_name: ros2_humble_dev
     network_mode: host
