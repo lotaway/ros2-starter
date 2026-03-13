@@ -1,4 +1,5 @@
- # /bin/bash
+# /bin/bash
+rm -rf build install log
 # colcon build with compile commands for VSCode IntelliSense
 colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 # colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug

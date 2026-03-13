@@ -7,7 +7,7 @@ void add(const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> req
           std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response)
 {
   response->sum = request->a + request->b;
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "收到请求: %ld + %ld = %ld", 
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "收到请求: %lld + %lld = %lld", 
               request->a, request->b, response->sum);
 }
 

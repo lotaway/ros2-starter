@@ -33,7 +33,7 @@ int main(int argc, char **argv)
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::FutureReturnCode::SUCCESS)
   {
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "结果: %ld + %ld = %ld", 
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "结果: %lld + %lld = %lld", 
                 request->a, request->b, result.get()->sum);
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "服务调用失败");
