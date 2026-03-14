@@ -118,3 +118,7 @@ source install/setup.bash
 | **Service** | 同步、双向、请求-响应 | 一次性查询、触发操作 |
 | **Action** | 异步、双向、带反馈 | 长时间运行任务 |
 
+
+# 报错
+
+要在 Windows 看到Gazebo界面gzclient ，请务必开启 VcXsrv (或其他 X Server)，并尝试在启动前 export LIBGL_ALWAYS_SOFTWARE=1。

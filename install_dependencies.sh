@@ -1,28 +1,19 @@
 #!/bin/bash
-# install_dependencies.sh - 记录并安装项目所需的所有额外依赖环境
+# install_dependencies.sh - 补充镜像缺失的仿真和控制核心组件
 
 set -e
 
-echo "正在更新包列表并安装核心依赖..."
+echo "正在同步仿真依赖环境..."
 sudo apt-get update
 
-# 1. 确保核心仿真插件完整
-# 虽然已在镜像中，但此处可作为强制更新和完整性检查
+# 安装经检测确认缺失的 ROS 2 仿真及控制插件包
 sudo apt-get install -y \
     ros-humble-gazebo-ros-pkgs \
     ros-humble-gazebo-ros2-control \
-    ros-humble-xacro \
     ros-humble-ros2-control \
-    ros-humble-ros2-controllers
-
-# 2. 视觉与硬件通信依赖
-sudo apt-get install -y \
-    ros-humble-cv-bridge \
-    ros-humble-image-transport \
-    python3-opencv
-
-# 3. 安装 Python 侧的检测库 (如果镜像没有)
-pip3 install ultralytics
-
+    ros-humble-ros2-controllers \
+    gdb
+    
 echo "------------------------------------"
-echo "所有依赖安装完成！"
+echo "依赖环境同步完成。"
+

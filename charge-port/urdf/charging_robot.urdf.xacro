@@ -290,14 +290,17 @@
     <joint name="joint1">
       <command_interface name="position"/>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
     <joint name="joint2">
       <command_interface name="position"/>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
     <joint name="joint3">
       <command_interface name="position"/>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
   </ros2_control>
 

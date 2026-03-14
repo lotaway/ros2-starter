@@ -1,31 +1,15 @@
-# /bin/bash
+#!/bin/bash
 
-# Load ROS2 base environment
+# 1. 加载系统 ROS2 Humble 环境
+source /opt/ros/humble/setup.bash
 
-if [ -f "/opt/ros/humble/setup.bash" ]; then
-
-    source /opt/ros/humble/setup.bash
-
-fi
-
-
-
-# Load local capture/install environment
-
+# 2. 加载项目本地编译环境
 if [ -f "install/setup.bash" ]; then
-
     source install/setup.bash
-
 else
-
-    echo "Error: install/setup.bash not found. Please run 'colcon build' first."
-
+    echo "错误: 未找到 install/setup.bash，请先运行 colcon build"
     exit 1
-
 fi
 
-
-
-# Launch simulation
-
+# 3. 启动仿真
 ros2 launch charge_port simulation.launch.py
