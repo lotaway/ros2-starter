@@ -37,7 +37,15 @@ class DetectionNode(Node):
         regions_path = self.get_parameter('regions_path').get_parameter_value().string_value
         
         # Initialize Models
+        # 使用项目内的绝对路径或固定路径存放模型
+        model_dir = os.path.join(pkg_share, 'models')
+        os.makedirs(model_dir, exist_ok=True)
+        
         self.get_logger().info(f"Loading vehicle model: {vehicle_model_path}")
+        # 如果是 yolov8n.pt，让它去固定目录找/存
+        if vehicle_model_path == 'yolov8n.pt':
+            vehicle_model_path = os.path.join(model_dir, 'yolov8n.pt')
+            
         self.vehicle_model = YOLO(vehicle_model_path)
         
         self.get_logger().info(f"Loading charging port model: {model_path}")
@@ -45,7 +53,9 @@ class DetectionNode(Node):
             self.charging_model = YOLO(model_path)
         else:
             self.get_logger().warn(f"Model file not found: {model_path}. Using base yolov8n for testing.")
-            self.charging_model = YOLO('yolov8n.pt')
+            # 同样，fallback 模型也存在固定目录
+            fallback_path = os.path.join(model_dir, 'yolov8n.pt')
+            self.charging_model = YOLO(fallback_path)
 
         # Load Regions
         try:
