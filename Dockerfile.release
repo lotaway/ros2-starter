@@ -1,0 +1,46 @@
+# --- 阶段 1: 编译环境 ---
+FROM osrf/ros:humble-desktop AS builder
+
+# 安装编译依赖
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    ros-humble-cv-bridge \
+    ros-humble-image-transport \
+    ros-humble-ros2-control \
+    ros-humble-ros2-controllers \
+    && rm -rf /var/lib/apt/lists/*
+
+# 设置工作中心
+WORKDIR /ros2_ws
+COPY ./charge-port ./src/charge-port
+
+# 编译项目 (使用 --merge-install 简化路径)
+RUN . /opt/ros/humble/setup.sh && \
+    colcon build --packages-select charge_port --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+# --- 阶段 2: 运行环境 (最终镜像) ---
+FROM osrf/ros:humble-ros-base
+
+# 仅安装运行必需的轻量级库 (不包含编译工具)
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    ros-humble-cv-bridge \
+    ros-humble-image-transport \
+    ros-humble-ros2-control \
+    ros-humble-ros2-controllers \
+    && rm -rf /var/lib/apt/lists/*
+
+# 安装项目依赖 (依照 requirements.txt)
+COPY ./charge-port/requirements.txt /tmp/requirements.txt
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+
+# 从编译阶段拷贝构建好的二进制文件
+WORKDIR /app
+COPY --from=builder /ros2_ws/install ./install
+
+# 设置启动环境变量
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \
+    echo "source /app/install/setup.bash" >> ~/.bashrc
+
+# 默认启动命令 (可以根据需要修改为启动 launch)
+ENTRYPOINT ["/bin/bash", "-c", "source /app/install/setup.bash && ros2 run charge_port hardware_node"]
