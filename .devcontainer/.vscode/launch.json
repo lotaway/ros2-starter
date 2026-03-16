@@ -28,7 +28,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/charge-port/scripts/detection_node.py",
             "console": "integratedTerminal",
-            "args": ["--ros-args", "--remapping", "camera/image_raw:=/camera/image_raw"],
+            "args": ["--ros-args", "--remap", "camera/image_raw:=/camera/image_raw"],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/install/charge_port/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages"
             }
