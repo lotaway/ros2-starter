@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# 1. 加载系统 ROS2 Humble 环境
-    source /opt/ros/humble/setup.bash
+# 1. 加载 mamba 环境中 ROS2 Humble
+source ~/miniforge3/etc/profile.d/conda.sh
+conda activate ros2_humble
 
 # 2. 加载项目本地编译环境
 if [ -f "install/setup.bash" ]; then
@@ -11,5 +12,5 @@ else
     exit 1
 fi
 
-# 3. 启动仿真
-ros2 launch charge_port simulation.launch.py
+# 3. 启动新版本 Gazebo 仿真 (ros_gz_sim)
+ros2 launch charge_port simulation_gz.launch.py
