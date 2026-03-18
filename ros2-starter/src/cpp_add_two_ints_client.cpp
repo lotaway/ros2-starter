@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <memory>
+#include <cinttypes>
 
 using namespace std::chrono_literals;
 
@@ -33,7 +34,7 @@ int main(int argc, char **argv)
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::FutureReturnCode::SUCCESS)
   {
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "结果: %lld + %lld = %lld", 
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "结果: %" PRId64 " + %" PRId64 " = %" PRId64, 
                 request->a, request->b, result.get()->sum);
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "服务调用失败");

@@ -2,12 +2,13 @@
 #include "example_interfaces/srv/add_two_ints.hpp"
 
 #include <memory>
+#include <cinttypes>
 
 void add(const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
           std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response)
 {
   response->sum = request->a + request->b;
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "收到请求: %lld + %lld = %lld", 
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "收到请求: %" PRId64 " + %" PRId64 " = %" PRId64,
               request->a, request->b, response->sum);
 }
 
