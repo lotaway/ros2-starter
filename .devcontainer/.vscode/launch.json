@@ -6,7 +6,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/install/charge_port/lib/charge_port/hardware_node",
-            "args": ["--ros-args", "-p", "use_simulation:=true"],
+            "args": [
+                "--ros-args",
+                "-p",
+                "use_simulation:=true"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -24,18 +28,22 @@
         },
         {
             "name": "ROS2: Debug Detection Node (Python)",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/charge-port/scripts/detection_node.py",
             "console": "integratedTerminal",
-            "args": ["--ros-args", "--remap", "camera/image_raw:=/camera/image_raw"],
+            "args": [
+                "--ros-args",
+                "--remap",
+                "camera/image_raw:=/camera/image_raw"
+            ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/install/charge_port/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages"
             }
         },
         {
             "name": "ROS2: Debug Arm Test Node (Python)",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/charge-port/scripts/arm_test_node.py",
             "console": "integratedTerminal"
