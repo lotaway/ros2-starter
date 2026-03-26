@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 1. 加载系统 ROS2 Humble 环境
-source /opt/ros/humble/setup.bash
+    source /opt/ros/humble/setup.bash
 
 # 2. 加载项目本地编译环境
 if [ -f "install/setup.bash" ]; then
