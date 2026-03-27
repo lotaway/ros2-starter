@@ -1,4 +1,4 @@
-#!/bin/bash
+# /bin/bash
 # install_dependencies.sh - 补充镜像缺失的仿真和控制核心组件
 
 set -e
@@ -17,4 +17,3 @@ sudo apt install -y \
     
 echo "------------------------------------"
 echo "依赖环境同步完成。"
-
