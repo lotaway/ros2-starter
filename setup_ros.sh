@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # setup_ros.sh - 这个脚本只在第一次运行
 if [ ! -f ~/.ros_configured ]; then
     echo "首次配置 ROS 环境..."
