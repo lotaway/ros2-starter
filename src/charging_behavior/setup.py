@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'arm_test_node = charging_behavior.arm_test_node:main',
+            'task_manager = charging_behavior.task_manager:main',
         ],
     },
 )
