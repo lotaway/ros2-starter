@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="charging_robot">
+    <group name="arm">
+        <joint name="joint1"/>
+        <joint name="joint2"/>
+        <joint name="joint3"/>
+        <chain base_link="arm_base" tip_link="charging_gun"/>
+    </group>
+    <group_state name="home" group="arm">
+        <joint name="joint1" value="0"/>
+        <joint name="joint2" value="0"/>
+        <joint name="joint3" value="0"/>
+    </group_state>
+    <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_footprint"/>
+    <disable_collisions link1="base_link" link2="arm_base" reason="Adjacent"/>
+    <disable_collisions link1="arm_base" link2="link1" reason="Adjacent"/>
+    <disable_collisions link1="link1" link2="link2" reason="Adjacent"/>
+    <disable_collisions link1="link2" link2="charging_gun" reason="Adjacent"/>
+    <disable_collisions link1="charging_gun" link2="camera_link" reason="Adjacent"/>
+</robot>
